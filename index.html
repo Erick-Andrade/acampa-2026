@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8">
+<title>Acampa 2026</title>
+
+<style>
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  font-family: Arial, sans-serif;
+  background: #e5e5e5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+    /* Tela de loading */
+    #loader {
+    position: fixed;
+    inset: 0;
+    background: #f0f2f5;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+    }
+
+    /* Bolinha girando */
+    .spinner {
+    width: 50px;
+    height: 50px;
+    border: 5px solid #ddd;
+    border-top: 5px solid #000;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    }
+
+    /* Animação */
+    @keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+    }
+
+.form-container {
+  background: #ffffff;
+  width: 100%;
+  max-width: 520px;
+  padding: 30px;
+  border-radius: 10px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+}
+
+h1 {
+  text-align: center;
+  margin-bottom: 25px;
+  color: #000;
+}
+
+label {
+  display: block;
+  margin-top: 15px;
+  font-weight: bold;
+  color: #333;
+}
+
+input[type="text"],
+input[type="tel"],
+textarea,
+select {
+  width: 100%;
+  padding: 10px;
+  margin-top: 6px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}
+
+textarea {
+  resize: vertical;
+}
+
+.group {
+  margin-top: 15px;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+}
+
+.inline {
+  display: flex;
+  gap: 15px;
+  flex-wrap: wrap;
+}
+
+.hidden {
+  display: none;
+}
+
+.payment-options label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+}
+
+button {
+  margin-top: 25px;
+  width: 100%;
+  padding: 14px;
+  font-size: 16px;
+  background: #000;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.total {
+    margin-top: 20px;
+    font-weight: bold;
+}
+
+.forma-pagamento-opcao {
+    display: flex; /* Ativa o Flexbox para o container */
+    align-items: center; /* Centraliza verticalmente todos os itens filhos */
+    gap: 10px; /* Adiciona um pequeno espaço entre os itens (opcional) */
+    margin-bottom: 10px; /* Espaçamento entre as opções (opcional) */
+}
+
+.forma-pagamento-opcao img {
+    /* Ajustes opcionais para o tamanho da imagem */
+    width: 24px;
+    height: 24px;
+}
+
+button:hover {
+  background: #333;
+}
+
+small {
+  color: #666;
+}
+</style>
+</head>
+
+<body>
+
+<div class="form-container">
+  <h1>Acampa 2026</h1>
+  <p>Contato para dúvidas: <strong>Erick Andrade - (34) 98891-4158</strong></p>
+
+  <form id="form">
+
+    <label>Nome completo</label>
+    <input type="text" required>
+
+    <label>Telefone</label>
+    <input type="tel" required>
+
+    <label>Restrições e observações</label>
+    <textarea rows="3"></textarea>
+
+    <label>Igreja</label>
+    <select id="igreja" required>
+    <option value="">Selecione</option>
+    <option>Pib Conquista</option>
+    <option>IBBNE</option>
+    <option value="outra">Outra</option>
+    </select>
+
+    <div id="igrejaOutra" class="hidden">
+    <input type="text" placeholder="Digite o nome da igreja">
+    </div>
+
+    <label>Precisa de colchão?</label>
+    <div class="inline">
+    <label><input type="radio" name="colchao" required> Sim</label>
+    <label><input type="radio" name="colchao" required checked> Não</label>
+    </div>
+
+    <label>Tipo de inscrição</label>
+    <div class="inline">
+    <label><input type="radio" name="tipo" value="adulto" checked> Adulto</label>
+    <label><input type="radio" name="tipo" value="crianca"> Criança</label>
+    </div>
+
+    <label>Quantos dias deseja ficar?</label>
+    <div class="group">
+    <label>
+        <input type="radio" name="diasTipo" value="todos" required>
+        Todos os dias – R$ 180,00
+    </label>
+
+    <label>
+        <input type="radio" name="diasTipo" value="especificos" required>
+        Dias específicos – R$ 50,00 / dia
+    </label>
+
+    <div id="diasBox" class="hidden">
+        <div class="inline">
+        <label><input type="checkbox" class="dia"> Sexta</label>
+        <label><input type="checkbox" class="dia"> Sábado</label>
+        <label><input type="checkbox" class="dia"> Domingo</label>
+        <label><input type="checkbox" class="dia"> Segunda</label>
+        </div>
+    </div>
+    </div>
+
+    <label>Forma de pagamento</label>
+    <div class="inline">
+<label class="forma-pagamento-opcao">
+    <input type="radio" name="pagamento" value="pix" checked>
+    <img src="pix.png" alt="Pix Icon">
+    Pix
+</label>
+
+<label class="forma-pagamento-opcao">
+    <input type="radio" name="pagamento" value="dinheiro">
+    <img src="money.png" alt="Money Icon">
+    Dinheiro
+</label>
+
+<label class="forma-pagamento-opcao">
+    <input type="radio" name="pagamento" value="cartao">
+    <img src="creditCard.jpg" alt="Credit card Icon">
+    Cartão de crédito
+</label>
+    </div>
+
+    <div class="total">
+    Valor total: R$ <span id="total">0,00</span>
+    </div>
+
+    <button type="submit">Finalizar inscrição</button>
+
+
+  </form>
+</div>
+
+<script>
+
+    window.addEventListener("load", function () {
+    const loader = document.getElementById("loader");
+
+    setTimeout(() => {
+        loader.style.opacity = "0";
+        loader.style.pointerEvents = "none";
+
+        setTimeout(() => {
+        loader.style.display = "none";
+        }, 300);
+    }, 1000);
+    });
+
+    function limparTudo() {
+        const formulario = document.getElementById('form');
+        
+        // 1. Volta todos os campos para o valor inicial (vazio ou default)
+        formulario.reset();
+
+        // 2. Zera manualmente o texto do Valor Total
+        document.getElementById('total').innerText = "0,00";
+
+        // 3. Esconde novamente as divs dinâmicas (se estiverem abertas)
+        document.getElementById('igrejaOutra').classList.add('hidden');
+        document.getElementById('diasBox').classList.add('hidden');
+
+        // Opcional: Rolar para o topo da página após limpar
+        window.scrollTo(0, 0);
+    }
+
+const igreja = document.getElementById("igreja");
+const igrejaOutra = document.getElementById("igrejaOutra");
+const diasBox = document.getElementById("diasBox");
+const totalSpan = document.getElementById("total");
+
+const labelTodos = document.querySelector('input[value="todos"]').parentElement;
+const labelEspecificos = document.querySelector('input[value="especificos"]').parentElement;
+
+function atualizarTextos() {
+  const tipo = document.querySelector('input[name="tipo"]:checked').value;
+
+  if (tipo === "adulto") {
+    labelTodos.innerHTML = `<input type="radio" name="diasTipo" value="todos" required>
+      Todos os dias – R$ 180,00`;
+    labelEspecificos.innerHTML = `<input type="radio" name="diasTipo" value="especificos" required>
+      Dias específicos – R$ 50,00 / dia`;
+  } else {
+    labelTodos.innerHTML = `<input type="radio" name="diasTipo" value="todos" required>
+      Todos os dias – R$ 90,00`;
+    labelEspecificos.innerHTML = `<input type="radio" name="diasTipo" value="especificos" required>
+      Dias específicos – R$ 25,00 / dia`;
+  }
+
+  adicionarEventosDiasTipo();
+}
+
+function calcularTotal() {
+  const tipo = document.querySelector('input[name="tipo"]:checked').value;
+  const diasTipo = document.querySelector('input[name="diasTipo"]:checked');
+  let total = 0;
+
+  if (!diasTipo) {
+    totalSpan.innerText = "0,00";
+    return;
+  }
+
+  if (diasTipo.value === "todos") {
+    total = tipo === "adulto" ? 180 : 90;
+  } else {
+    const diasSelecionados = document.querySelectorAll(".dia:checked").length;
+    total = tipo === "adulto"
+      ? diasSelecionados * 50
+      : diasSelecionados * 25;
+  }
+
+  totalSpan.innerText = total.toFixed(2).replace(".", ",");
+  return total;
+}
+
+function adicionarEventosDiasTipo() {
+  document.querySelectorAll('input[name="diasTipo"]').forEach(radio => {
+    radio.addEventListener("change", () => {
+      diasBox.classList.toggle("hidden", radio.value !== "especificos");
+      calcularTotal();
+    });
+  });
+}
+
+// Igreja "Outra"
+igreja.addEventListener("change", () => {
+  igrejaOutra.classList.toggle("hidden", igreja.value !== "outra");
+});
+
+// Atualiza ao mudar adulto/criança
+document.querySelectorAll('input[name="tipo"]').forEach(radio => {
+  radio.addEventListener("change", () => {
+    atualizarTextos();
+    calcularTotal();
+  });
+});
+
+// Atualiza ao clicar nos dias
+document.querySelectorAll(".dia").forEach(cb => {
+  cb.addEventListener("change", calcularTotal);
+});
+
+// Submit
+document.getElementById("form").addEventListener("submit", e => {
+  e.preventDefault(); // 🔴 ESSENCIAL
+
+  const diasTipo = document.querySelector('input[name="diasTipo"]:checked').value;
+
+  if (diasTipo === "especificos") {
+    const dias = document.querySelectorAll(".dia:checked").length;
+    if (dias === 0) {
+      alert("Selecione pelo menos um dia.");
+      return;
+    }
+  }
+
+  const pagamento = document.querySelector('input[name="pagamento"]:checked').value;
+
+  alert("Para finalizar a inscrição, faça o pagamento e mande o comprovante para Erick Andrade - (34) 98891-4158");
+  let total = calcularTotal();
+  if (pagamento === "pix") {
+        localStorage.setItem('valorPix', total);
+        window.location.href = "pix.html";
+  }
+  if (pagamento === "cartao") {
+    if (total === 25) window.location.href = "https://pay.infinitepay.io/erick-silva-de-319/VC1D-2Kfu8nezND-25,00";
+    if (total === 50) window.location.href = "https://pay.infinitepay.io/erick-silva-de-319/VC1D-3V0rUmLXXD-50,00";
+    if (total === 75) window.location.href = "https://pay.infinitepay.io/erick-silva-de-319/VC1D-701jlBUqDp-75,00";
+    if (total === 90) window.location.href = "https://pay.infinitepay.io/erick-silva-de-319/VC1D-1kVR12tOpr-90,00";
+    if (total === 100) window.location.href = "https://pay.infinitepay.io/erick-silva-de-319/VC1D-701kSG9FXp-100,00";
+    if (total === 150) window.location.href = "https://pay.infinitepay.io/erick-silva-de-319/VC1D-O6zAy5OWf-150,00";
+    if (total === 180) window.location.href = "https://pay.infinitepay.io/erick-silva-de-319/VC1D-1OjgSsha2R-180,00";
+    if (total === 200) window.location.href = "https://pay.infinitepay.io/erick-silva-de-319/VC1D-2Kfv9EzfVN-200,00";
+  }
+  if (pagamento === "dinheiro") alert("Pagamento será feito no dia.");
+  limparTudo();
+});
+
+// Inicialização
+atualizarTextos();
+calcularTotal();
+</script>
+
+
+
+</body>
+</html>
+
+
+<!--
+
+
+    <a href="https://pay.infinitepay.io/erick-silva-de-319/VC1D-1OjgSsha2R-180,00">Crédito</a>
+    <a href="pix.html">Pix</a>
+Usando as cores cinza, branco e preto faça um forms centralizado com as seguintes informações:
+Coloca um título centralizado no topo escrito - Acampa 2026
+
+Nome Completo
+Telefone
+Restrições e observações
+Igreja ( coloca 3 opções Igreja A, Igreja B, Outra (aqui coloca um input para ela digitar))
+Precisa de colchão (sim ou não)
+Quantos dias deseja ficar (escolha 1 dentre os 2):
+    - Todos os dias
+    - Dias específicos - Se caso apertar aqui aprece mais uma informação (Que é selecione os dias)
+        Sexta, sábado, domingo e segunda (pode selecionar vários)
+Tipo de inscrição - Adulto ou criança
+Forma de pagamento (1 escolha dentre 3) - coloque um ícone para ajudar também:
+    Pix
+    Dinheiro
+    Cartão de crédito
+
+Botão - finaliza inscrição-->
+
+<!--
+Faça essas 5 alterações:
+1 - Deixe tudo como obrigatório (exceto observação)
+2 - Quando eu clicar em dias específicos, tem que selecionar pelo menos 1
+3 - Faça a lógica do preço, da seguinte maneira:
+    1 - Se a pessoa clicou em adulto (já pode deixar isso pre-selecionado)
+        No Todos os dias, modifica para Todos os dias - R$ 180,00
+        Em dias específicos, modifica para  dias específicos - R$ 50,00 / dia
+    2 - se for criança, faça a mesma lógica do de cima, porém, divia por 2
+4 - Ante de finalizar, mostre o valor total
+    Se for todos os dias, só colocar o valor (180 para adulto e 90 para criança)
+    Se for dias específicos 50 * quantidade selecionada (se for adulto) e 25*quantidade selecionado (se for criança)
+5 - Quando clicar para submeter crie 3 caminhos:
+    1 - para cartão.html
+    2 - para pix.html
+    3 - dinheiro.html
+
+Modifique este código:-->
+

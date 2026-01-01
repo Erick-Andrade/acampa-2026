@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pagamento PIX</title>
+
+<style>
+* {
+  box-sizing: border-box;
+}
+
+html, body {
+  height: 100%;
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #f0f2f5;
+}
+
+/* Centralização inteligente */
+.wrapper {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  padding: 20px;
+}
+
+/* Box principal */
+.box {
+  background: #ffffff;
+  width: 100%;
+  max-width: 420px;
+  border-radius: 14px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+  padding: 20px;
+  text-align: center;
+}
+
+/* Banner "lembre-se" */
+.notice {
+  background: #f0f2f5;
+  border-radius: 10px;
+  padding: 14px;
+  margin-bottom: 20px;
+  font-size: 15px;
+  font-weight: 600;
+    }
+
+
+/* Imagem PIX */
+img {
+  width: 100%;
+  height: auto;
+  max-height: 70vh;
+  object-fit: contain;
+  margin-top: 10px;
+}
+
+    /* Tela de loading */
+    #loader {
+    position: fixed;
+    inset: 0;
+    background: #f0f2f5;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+    }
+
+    /* Bolinha girando */
+    .spinner {
+    width: 50px;
+    height: 50px;
+    border: 5px solid #ddd;
+    border-top: 5px solid #000;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    }
+
+    /* Animação */
+    @keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+    }
+</style>
+</head>
+
+<body>
+    <div id="loader">
+    <div class="spinner"></div>
+    </div>
+
+<div class="wrapper">
+  <div class="box">
+
+    <div class="notice">
+      Lembre-se de enviar o comprovante para:<br>
+      <strong>Erick Andrade - (34) 98891-4158</strong>
+    </div>
+
+    <img id="qrCode" src="" alt="QR Code PIX">
+
+  </div>
+</div>
+<script>
+    const total = parseInt(localStorage.getItem('valorPix'));
+    console.log("Valor recuperado: " + total);
+    document.getElementById("qrCode").src = `./qrCode/pix${total}.jpeg`;
+    window.addEventListener("load", function () {
+        const loader = document.getElementById("loader");
+    
+        setTimeout(() => {
+            loader.style.opacity = "0";
+            loader.style.pointerEvents = "none";
+
+            setTimeout(() => {
+            loader.style.display = "none";
+            }, 300);
+    }, 1000);
+    });
+    </script>
+
+</body>
+</html>
+
+
